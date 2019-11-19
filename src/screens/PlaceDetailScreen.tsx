@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { IPlaceDetailScreenParams } from "../interfaces/params";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { IPlaceDetailScreenParams } from '../interfaces/params';
 import {
   NavigationStackScreenProps,
   NavigationStackScreenComponent
-} from "react-navigation-stack";
+} from 'react-navigation-stack';
 
 interface IPlaceDetailScreenProps
   extends NavigationStackScreenProps<
@@ -25,7 +25,9 @@ PlaceDetailScreen.navigationOptions = (
     IPlaceDetailScreenProps
   >
 ) => {
-  return {};
+  return {
+    headerTitle: navigationData.navigation.getParam('placeTitle')
+  };
 };
 
 const styles = StyleSheet.create({});
