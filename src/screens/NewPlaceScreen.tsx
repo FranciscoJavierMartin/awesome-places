@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import {
   NavigationStackScreenProps,
@@ -12,6 +12,7 @@ import Colors from '../constants/Colors';
 import placesActions from '../store/actions/places-actions';
 import { IAction } from '../interfaces/action';
 import ImagePicker from '../components/ImagePicker';
+import LocationPicker from '../components/LocationPicker';
 
 interface INewPlaceScreenProps
   extends NavigationStackScreenProps<
@@ -25,8 +26,8 @@ const NewPlaceScreen: NavigationStackScreenComponent<
 > = (props: INewPlaceScreenProps) => {
   const [titleValue, setTitleValue] = useState<string>('');
   const [selectedImage, setSelectImage] = useState<string>('');
-
-  const dispatch = useDispatch<Dispatch<IAction>>();
+  const [selectedLocation, setSelectedLocation] = useState();
+  const dispatch = useDispatch();
 
   const titleChangeHandler = (text: string) => {
     setTitleValue(text);
@@ -37,9 +38,13 @@ const NewPlaceScreen: NavigationStackScreenComponent<
   };
 
   const savePlaceHandler = () => {
-    dispatch(placesActions.addPlace(titleValue, selectedImage));
+    dispatch(placesActions.addPlace(titleValue, selectedImage, selectedLocation));
     props.navigation.goBack();
   };
+
+  const locationPickerHandler = useCallback((location: any) => {
+    setSelectedLocation(location);
+  },[setSelectedLocation]);
 
   return (
     <ScrollView>
@@ -51,6 +56,7 @@ const NewPlaceScreen: NavigationStackScreenComponent<
           value={titleValue}
         />
         <ImagePicker onImageTaken={imageTakenHandler}/>
+        <LocationPicker navigation={props.navigation} onLocationPicked={locationPickerHandler}/>
         <Button title='Save place' color={Colors.primary} onPress={savePlaceHandler} />
       </View>
     </ScrollView>

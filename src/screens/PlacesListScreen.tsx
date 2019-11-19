@@ -40,7 +40,7 @@ const PlacesListScreen: NavigationStackScreenComponent<
         <PlaceItem
           image={item.imageUri}
           title={item.title}
-          address={null}
+          address={item.address}
           onSelect={() => {
             props.navigation.navigate('PlaceDetailScreen',{
               placeTitle: item.title,

@@ -4,6 +4,11 @@ export interface IActionAddPlace {
   id: number;
   title: string;
   image: string;
+  address: string;
+  coords: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface IActionSetPlaces {

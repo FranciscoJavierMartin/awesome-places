@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Button, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Button, Text, StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
+import { verifyPermissions } from '../helpers/permissions';
 import Colors from '../constants/Colors';
 
 interface IImageSelecterProps {
@@ -12,26 +12,8 @@ interface IImageSelecterProps {
 const ImagePkr = (props: IImageSelecterProps) => {
   const [pickedImage, setPickedImage] = useState();
 
-  const verifyPermissions = async (): Promise<boolean> => {
-    let gotPermissions: boolean = true;
-    const result = await Permissions.askAsync(
-      Permissions.CAMERA,
-      Permissions.CAMERA_ROLL
-    );
-    if (result.status !== 'granted') {
-      Alert.alert(
-        'Insufficient permissions',
-        'You need to grant camera permissions to use this app',
-        [{ text: 'Okay' }]
-      );
-      gotPermissions = false;
-    }
-
-    return gotPermissions;
-  };
-
   const takeImageHandler = async (): Promise<void> => {
-    const hasPermission = await verifyPermissions();
+    const hasPermission = await verifyPermissions(Permissions.CAMERA_ROLL, Permissions.CAMERA);
     if (hasPermission) {
       const image = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
